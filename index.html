@@ -2,6 +2,7 @@
 <html>
 <head>
    <title>ai_notez</title>
+   <meta content="width=device-width, initial-scale=1" name="viewport" />
 </head>
    <body>
      <style>/* PC */
@@ -47,6 +48,7 @@
                repeating-linear-gradient(darkslateblue, darkslateblue 40px, #344065 40px, #344065 41px, darkslateblue 41px);
             line-height: 31px;
             padding: 8px 10px;
+            max-width: 66em;
          }
         
       @media only screen and (max-width: 800px) { /* TABLET */
@@ -156,16 +158,16 @@
          <button class="subMenuBtn" onclick="pipeFn()"><span style="font-size: 0.777em;
             ">|</span></button>            
         </menu>
-        <section id="allchatBOX"  class="hiddenTab scrollBarV" style="width:80.888%;
-        /* height:100%; */
-        margin: 0 2% 0 2%;
-        border-radius: 13px; border: solid 1px steelblue; box-shadow: 1px 1px 11px 0px cyan;
-        padding: 4% 0 4% 4%; color: cyan;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            max-height: 60%;
-    overflow-y: scroll;
+        <section id="allchatBOX"  class="hiddenTab scrollBarV" 
+            style="width:80.888%;
+                margin: 0 2% 0 2%;
+                border-radius: 13px; border: solid 1px steelblue; box-shadow: 1px 1px 11px 0px cyan;
+                padding: 4% 0 4% 4%; color: cyan;
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                max-height: 60%;
+                overflow-y: scroll;
             "
         >
            <header style="font-size: 0.777em; display:flex;flex: 0 0 auto;">
@@ -186,7 +188,7 @@
                & SECRET:&nbsp;
                   <input id="ipfsSecret" type="password" style="border-radius: 13px;
                   padding: 0.444em;font-size: 0.888em;background: #37d6f3;color: black;"> 
-                  <button onclick="ipfsInit()" style="font-size:0.666em;padding:0.444em;border-radius:13px;
+                  <button onclick="/*ipfsInit()*/" style="font-size:0.666em;padding:0.444em;border-radius:13px;
                   box-shadow: inset -1px -1px 4px 1px rgb(83, 93, 204);cursor:pointer;background: #37d6f3;">
                   CONNECT</button>
               </div>
@@ -669,11 +671,11 @@
             setTimeout( ()=>{document.getSelection().collapseToEnd()},2000)
          };     
 
-         let allChatFn = () => { 
+         let allChatFn = () => { //From AllChats button
             if(allchatBOX.classList.contains('hiddenTab') ){
                allchatBOX.classList.remove('hiddenTab')
                textareaBOX.classList.add('hiddenTab')
-               renderAllChatMenu();
+               renderAllChatMenu(); //show data
             } else {
                allchatBOX.classList.add('hiddenTab')
                textareaBOX.classList.remove('hiddenTab')
@@ -692,6 +694,8 @@
          let renderAllChatMenu = () => { //reload all doc view
             //load data for view from local storage
             all_chat_docs = (localStorage.all_chat_docs)?JSON.parse( localStorage.all_chat_docs ):[];
+            if(!all_chat_docs || all_chat_docs===0){
+                all_chat_docs = loadMockData(); }
             const allChatsMenu = document.getElementById('allChatsMenu');
             allChatsMenu.innerHTML='';
             // Map over the array and create buttons
@@ -858,6 +862,14 @@
                JSON.parse( localStorage.ipfsCorpus ):[];
          }; loadCorpusFromLocalStorage();
 
+         let loadMockData = () => {
+            return [
+                JSON.parse(
+                '{"title":"# INTRO GenAI","txt":"# INTRO GenAI\\n- define, explain, describe genai\\n- model types and applications\\n- content: text imagery audio, synthetic data\\n\\n## what is ai, difference ml\\nai is computer science of agents, theory method,\\nmachine learning, trains model, useful predictions.\\nability to learn without explicit programming\\n## supervised and unsupervised\\n- data model input\\n### supervised\\n- labeled data\\n- past examples predict future values.\\n- model predicted output compared to expected output | error\\n- train data does not match predicted data = effor\\n- model reduce error until predicted and training are closer\\n### unsupervised \\n- discovery, cluster, natural groups\\n- unlabeled data - generated example\\n## DEEP LEARING\\n- subset of ML\\n- more complex patterns.\\n-  use artificial neural networks (neuron)\\n- more complex patterns.\\n### supervised, unsupervised, reinforcement, deep learning.\\n- learn to perform tasks, by process data, and make prediction.\\n- Input Layer, Hidden Layer, Output Layer.\\n# CHARTS ( ARTIFICIAL_NEURAL_NETWORKS )\\n - network, sankey, edge bundling, force-directed.\\n - many layers of neruons.\\n## SEMI SUPERVISED LEARNING \\n- use both labeled and unlabled data (sankey)\\n- trained on small labeled data and large unlabled data\\n- basic concepts to general examples.\\n# GENERATIVE AI\\n- subset of ML & Deep Learning\\n## Large language models\\n-  also subset of deep learning.\\n## Discriminative and Generative Deep Learning Models.\\n### Discriminitive\\n- classify and predict from labeled data points\\n- learn relationship between data points by labels\\n- conditional probability distribution (y)\\n- different kinds\\n### Generative\\n- generates new data from training data\\n- learned probability distribution\\n- instances from existing data (new content)\\n"}'                    
+                )                
+            ]
+         }
+
          // let editForCorpus = (tgt) => {
          //    debugger;
          //    //compare targets to
@@ -920,38 +932,38 @@
             }
          });
    //------------------------  IPFS
-   const ipfsInit = ()=>{
-      //if keys are local, load local
-      // if(localStorage.ipfsKeyVal && localStorage.ipfsSecretVal){
-      // if(localStorage.ipfsKeyVal && localStorage.ipfsSecretVal){
-      //     ipfsKeyVal = localStorage.ipfsKeyVal;
-      //     ipfsSecretVal = localStorage.ipfsSecretVal;
-      // } else {
-      ipfsKeyVal = ipfsKey.value;
-      ipfsSecretVal = ipfsSecret.value;
-      // }
-      if(!ipfsKeyVal || !ipfsSecretVal ) {console.log('no ipfs'); return;}
-      const url = `https://api.pinata.cloud/data/testAuthentication`;
-      return axios
-            .get(url, {
-               headers: {
-                  'pinata_api_key': ipfsKeyVal,
-                  'pinata_secret_api_key': ipfsSecretVal
-               }
-            })
-            .then(function (response) {
-               if(response.data.message === 'Congratulations! You are communicating with the Pinata API!'){
-                  console.log('Connected to IPFS')
-               }
-               ipfsConnected.style.display = "block";
-               ipfsInput.style.display = "none";  
-               //rerender all chats display
-               renderAllChatMenu();
-            })
-            .catch(function (error) {
-               console.log(error)
-            });
-      }; //ipfsInit();  
+//    const ipfsInit = ()=>{
+//       //if keys are local, load local
+//       // if(localStorage.ipfsKeyVal && localStorage.ipfsSecretVal){
+//       // if(localStorage.ipfsKeyVal && localStorage.ipfsSecretVal){
+//       //     ipfsKeyVal = localStorage.ipfsKeyVal;
+//       //     ipfsSecretVal = localStorage.ipfsSecretVal;
+//       // } else {
+//       ipfsKeyVal = ipfsKey.value;
+//       ipfsSecretVal = ipfsSecret.value;
+//       // }
+//       if(!ipfsKeyVal || !ipfsSecretVal ) {console.log('no ipfs'); return;}
+//       const url = `https://api.pinata.cloud/data/testAuthentication`;
+//       return axios
+//             .get(url, {
+//                headers: {
+//                   'pinata_api_key': ipfsKeyVal,
+//                   'pinata_secret_api_key': ipfsSecretVal
+//                }
+//             })
+//             .then(function (response) {
+//                if(response.data.message === 'Congratulations! You are communicating with the Pinata API!'){
+//                   console.log('Connected to IPFS')
+//                }
+//                ipfsConnected.style.display = "block";
+//                ipfsInput.style.display = "none";  
+//                //rerender all chats display
+//                renderAllChatMenu();
+//             })
+//             .catch(function (error) {
+//                console.log(error)
+//             });
+//       }; //ipfsInit();  
       
       
       const IPFSPinaFile = (item)=>{
