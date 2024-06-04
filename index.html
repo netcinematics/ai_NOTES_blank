@@ -58,7 +58,7 @@
          .subMenuBtn{font-size:0.666em;}
       }  
       @media only screen and (max-width: 500px) { /* PHONE */
-         body{ background-color: #07589f;}
+         body{ background-color: #02051e;}
          .btnTXT{font-size:0.888em;}
          .mainBtn{margin:0.666em;}
          .subMenuBtn{font-size:0.666em;}
@@ -694,7 +694,7 @@
          let renderAllChatMenu = () => { //reload all doc view
             //load data for view from local storage
             all_chat_docs = (localStorage.all_chat_docs)?JSON.parse( localStorage.all_chat_docs ):[];
-            if(!all_chat_docs || all_chat_docs===0){
+            if(!all_chat_docs || all_chat_docs.length===0){
                 all_chat_docs = loadMockData(); }
             const allChatsMenu = document.getElementById('allChatsMenu');
             allChatsMenu.innerHTML='';
