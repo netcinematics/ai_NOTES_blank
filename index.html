@@ -65,7 +65,6 @@
       }
 
       /*  custom scroll bar */
-      /* .scrollBar2 {height:97%; overflow-x:hidden; background:#010111; border: 1px steelblue solid; border-radius:13px; padding:0.5em; } */
       .scrollBarV {height:97%; overflow-x:scroll; background:#010111; border: 1px steelblue solid; border-radius:13px;  }
       .scrollBarV::-webkit-scrollbar-track { background-color: #010213;  border-radius: 13px; }
       .scrollBarV::-webkit-scrollbar { width: 0.666em; height: 100%; }
@@ -653,7 +652,14 @@
             },3000)    
          };     
 
-         let copyChatFn = () => { 
+         let copyChatFn = () => {
+            
+            if(allchatBOX.classList.contains('hiddenTab') ){
+            } else { //show notes if hidden
+               allchatBOX.classList.add('hiddenTab')
+               textareaBOX.classList.remove('hiddenTab')
+            }
+            
             textareaBOX.select();
             transcript = textareaBOX.value;
             navigator.clipboard.writeText(transcript);
@@ -694,8 +700,8 @@
          let renderAllChatMenu = () => { //reload all doc view
             //load data for view from local storage
             all_chat_docs = (localStorage.all_chat_docs)?JSON.parse( localStorage.all_chat_docs ):[];
-            if(!all_chat_docs || all_chat_docs.length===0){
-                all_chat_docs = loadMockData(); }
+            // if(!all_chat_docs || all_chat_docs.length===0){
+            //     all_chat_docs = loadMockData(); }
             const allChatsMenu = document.getElementById('allChatsMenu');
             allChatsMenu.innerHTML='';
             // Map over the array and create buttons
