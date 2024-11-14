@@ -170,34 +170,14 @@
             "
         >
            <header style="font-size: 0.777em; display:flex;flex: 0 0 auto;">
-            🌎 SAVE CHATS to IPFS 🛰️: 
-            <aside id="ipfsConnected" style="display:none;width:133px;
+            🌎 SAVE CHATS locally 🛰️: 
+            <aside style="display:none;width:133px;
             border-radius: 10px; margin-left: 1em;
             flex: 0 0 auto;
             box-shadow: inset -1px -1px 4px 1px rgb(83, 93, 204);">
-            &nbsp;&nbsp;⚡ Connected to IPFS. 
+            &nbsp;&nbsp;⚡ Connected 
          </aside>
            </header>
-           <aside id="ipfsInput" style="display:flex; flex: 0 0 auto;">
-              <div style="font-size:0.666em;padding: 1em;">IPFS KEY:&nbsp;
-                  <input id="ipfsKey" style="border-radius: 13px;
-                  padding: 0.444em;font-size: 0.888em;background: #37d6f3;color: black;">
-                   <!-- </div> -->
-              <!-- <div style="font-size:0.666em;padding: 1em;"> -->
-               & SECRET:&nbsp;
-                  <input id="ipfsSecret" type="password" style="border-radius: 13px;
-                  padding: 0.444em;font-size: 0.888em;background: #37d6f3;color: black;"> 
-                  <button onclick="/*ipfsInit()*/" style="font-size:0.666em;padding:0.444em;border-radius:13px;
-                  box-shadow: inset -1px -1px 4px 1px rgb(83, 93, 204);cursor:pointer;background: #37d6f3;">
-                  CONNECT</button>
-              </div>
-           </aside>
-           <!-- <aside id="ipfsConnected" style="display:none;width:155px;
-              padding: 13px;border-radius: 13px; margin: 1em;
-              flex: 0 0 auto;
-              box-shadow: inset -1px -1px 4px 1px rgb(83, 93, 204);">
-              ⚡ Connected to IPFS 
-           </aside> -->
            <hr></hr>
            <header style="display:flex;flex: 0 0 auto;">
             <button onclick="backChatFn()"  style="font-size:0.666em;padding:0.444em;border-radius:13px;
@@ -214,17 +194,6 @@
                   margin-right: 1%;">
            </article>
            <hr>
-           <footer id="ipfsCorpusFooter" style="display:flex;justify-content: center;" class="hiddenTab">
-            <button id="copyIPFSBtn" onclick="docCopyIPFSCorpusFn()"  style="font-size:0.666em;padding:0.444em;border-radius:13px;
-            box-shadow: inset -1px -1px 4px 1px rgb(112, 123, 243);cursor:pointer;background: #be75c8;">
-            🎭 copy corpus (of ipfs hashes)</button>   
-            <input id="newCorpusArray" style="border-radius: 10px;color: cyan;
-            background: #040631;font-size: 0.555em;
-            margin: 0 1em;"></input>                      
-            <button id="loadIPFSBtn" onclick="docloadIPFSCorpusFn()"  style="font-size:0.666em;padding:0.444em;border-radius:13px;
-            box-shadow: inset -1px -1px 4px 1px rgb(112, 123, 243);cursor:pointer;background: #be75c8;">
-            💎 load corpus (of ipfs hashes)</button>                         
-           </footer>
         </section>
       <textarea id="textareaBOX" onmouseup="setCursorRowFn()" class="scrollBarV"
         style="width:80.888%;
@@ -255,11 +224,6 @@
            border:1px solid grey;">
          🎤</span><span class="btnTXT hoverTXT">SPEAK</span>
       </button>      
-       <!--button class="" onclick="saveChatIPFSFn()" style="margin:1em;border-radius:8px;background:grey;
-          cursor:pointer;box-shadow: inset -1px -1px 4px 1px gold;">
-          <span style="border-radius:100%;background:gold;border:1px solid grey;">
-            💾</span> <span class="btnTXT hoverTXT">SAVE CHAT</span>
-       </button-->
        <button class="" onclick="copyChatFn()" style="margin:1em;border-radius:8px;background:grey;
           cursor:pointer;box-shadow: inset -1px -1px 4px 1px orangered;">
           <span style="border-radius:100%;background:orangered;border:1px solid grey;">
@@ -292,11 +256,6 @@
          let stateCopiedBox = document.getElementById('copiedBox');
          let transcript, txtline, txttgt;
          let all_chat_docs = [], chat_doc = {};
-         let ipfsInput = document.getElementById('ipfsInput');
-         let ipfsConnected = document.getElementById('ipfsConnected');
-         let ipfsSecretVal = '';         
-         let ipfsKeyVal = '';
-         let ipfsCorpus = [];
          let txtBOXLineNumber = 0;
          let recognition = new webkitSpeechRecognition() || new SpeechRecognition();       
          let transcribeTXT = () => {
@@ -618,10 +577,6 @@
             // },3000)                        
          };   
          let saveChatIPFSFn = () => { //         SAVE to IPFS
-            if(!ipfsKeyVal || !ipfsSecretVal ) {
-               showErrorMSG('🛰️ no ipfs')
-               return;
-            }
             return; //TODO PIN TO IPFS with HASH
 
             let updated_doc = false;
@@ -773,10 +728,10 @@
                allChatsMenu.appendChild(section1);    
             }); 
             //Display copy ipfs corpus 
-            if(ipfsSecretVal && ipfsKeyVal ){
-               const ipfsCorpusFooter = document.getElementById('ipfsCorpusFooter');
-               ipfsCorpusFooter.classList.remove('hiddenTab') 
-            }      
+            // if(ipfsSecretVal && ipfsKeyVal ){
+            //    const ipfsCorpusFooter = document.getElementById('ipfsCorpusFooter');
+            //    ipfsCorpusFooter.classList.remove('hiddenTab') 
+            // }      
          }
          let docLookup = (text) => { //load txt, and switch to view
 
@@ -797,26 +752,23 @@
             textareaBOX.classList.remove('hiddenTab') 
          } 
          let docSaveFn = (item) => { //save doc to IPFS
-            if(!ipfsKeyVal || !ipfsSecretVal ) {
-               showErrorMSG('🛰️ no ipfs')
-               return;
-            }
-            IPFSPinaFile(item);
+            // if(!ipfsKeyVal || !ipfsSecretVal ) {
+            //    showErrorMSG('🛰️ no ipfs')
+            //    return;
+            // }
          }
 
          let docLoadHashFn = (hash) => { //load view with hash doc
-            if(!ipfsKeyVal || !ipfsSecretVal ) {
-               showErrorMSG('🛰️ no ipfs')
-               return;
-            }
-            IPFSLoadPinaFile(hash);          
+            // if(!ipfsKeyVal || !ipfsSecretVal ) {
+            //    showErrorMSG('🛰️ no ipfs')
+            //    return;
+            // }
          }
          let docUpdateFn = (item) => { //edited doc, for new hash.
-            if(!ipfsKeyVal || !ipfsSecretVal ) {
-               showErrorMSG('🛰️ no ipfs')
-               return;
-            }
-            IPFSPinaFile(item);
+            // if(!ipfsKeyVal || !ipfsSecretVal ) {
+            //    showErrorMSG('🛰️ no ipfs')
+            //    return;
+            // }
          }
          let docloadIPFSCorpusFn = () => { //copy buffer, ipfsCorpus.
             let newCorpus = document.getElementById('newCorpusArray');
@@ -937,93 +889,7 @@
                }
             }
          });
-   //------------------------  IPFS
-//    const ipfsInit = ()=>{
-//       //if keys are local, load local
-//       // if(localStorage.ipfsKeyVal && localStorage.ipfsSecretVal){
-//       // if(localStorage.ipfsKeyVal && localStorage.ipfsSecretVal){
-//       //     ipfsKeyVal = localStorage.ipfsKeyVal;
-//       //     ipfsSecretVal = localStorage.ipfsSecretVal;
-//       // } else {
-//       ipfsKeyVal = ipfsKey.value;
-//       ipfsSecretVal = ipfsSecret.value;
-//       // }
-//       if(!ipfsKeyVal || !ipfsSecretVal ) {console.log('no ipfs'); return;}
-//       const url = `https://api.pinata.cloud/data/testAuthentication`;
-//       return axios
-//             .get(url, {
-//                headers: {
-//                   'pinata_api_key': ipfsKeyVal,
-//                   'pinata_secret_api_key': ipfsSecretVal
-//                }
-//             })
-//             .then(function (response) {
-//                if(response.data.message === 'Congratulations! You are communicating with the Pinata API!'){
-//                   console.log('Connected to IPFS')
-//                }
-//                ipfsConnected.style.display = "block";
-//                ipfsInput.style.display = "none";  
-//                //rerender all chats display
-//                renderAllChatMenu();
-//             })
-//             .catch(function (error) {
-//                console.log(error)
-//             });
-//       }; //ipfsInit();  
-      
-      
-      const IPFSPinaFile = (item)=>{
-         if(!item || !item.title){ console.log('no data'); return; }
-         //gateway = https://gateway.pinata.cloud/ipfs/QmX3Xj4g5HcqMhudiFz4zWSdx3JJiVuLEmvopRKiD1bsi8/
-         //gateway = https://gateway.pinata.cloud/ipfs/QmNkpMS3yHmopYSSZKoxUaCp9A8GmbRS63z8uvJo2DafK7/
-         // const url =  'https://api.pinata.cloud/pinning/pinFileToIPFS';
-         // const url = `https://api.pinata.cloud/pinning/pinJSONToIPFS`;
-         // const data = textareaBOX.value
-         ipfsKeyVal = ipfsKey.value;
-         ipfsSecretVal = ipfsSecret.value;
-         if(!ipfsKeyVal || !ipfsSecretVal ) {return;}
-         // return axios.post('https://api.pinata.cloud/pinning/pinFileToIPFS',
-         debugger;
-         return axios.post('https://api.pinata.cloud/pinning/pinJSONToIPFS',
-            item,
-            // JSON.stringify(item),
-            //data,
-            { headers: {
-                  // 'Content-Type': `multipart/form-data; boundary= ${data._boundary}`,
-                  'pinata_api_key': ipfsKeyVal,
-                  'pinata_secret_api_key': ipfsSecretVal
-               }
-            }).then(function (response) { //on successful PIN
-               let IpfsHash = response.data.IpfsHash;
-               let IpfsTime = response.data.Timestamp;
-               ipfsCorpus.push({title:item.title,hash:IpfsHash,time:IpfsTime})
-               localStorage.ipfsCorpus = JSON.stringify(ipfsCorpus)
-               renderAllChatMenu();
-                  //response.data.Timestamp = '2023-10-01T22:03:20.066Z'
-                  //response.data.IpfsHash = 'QmX3Xj4g5HcqMhudiFz4zWSdx3JJiVuLEmvopRKiD1bsi8'
-               // response.data.IpfsHash
-               // 'QmeWPa9vyrRfXkJhkU4BJN3bsF9KHqde4KMZzgjfVZwFKT'
-               // response.data.Timestamp
-               // '2023-10-07T22:28:11.643Z'
-               // JSON.parse(response.config.data)
-            }).catch(function (error) {
-               debugger;
-            });
-      };
-      const IPFSLoadPinaFile = (hash)=>{
-         if(!hash){return}
-         axios.get(`https://gateway.pinata.cloud/ipfs/${hash}/`)
-         .then(function (response) { //on successful PIN
-               console.log('loaded',response.data.title)
-               textareaBOX.value = response.data.txt;
-               textareaTXT = transcript.split('\n')
-               allchatBOX.classList.add('hiddenTab')
-               textareaBOX.classList.remove('hiddenTab') 
-               selectedTXT = '';               
-            }).catch(function (error) {
-               console.log('could not load ipfs file')
-            });         
-      }
+ 
       </script> 
    </body>
 </html>
